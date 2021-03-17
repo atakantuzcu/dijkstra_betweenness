@@ -49,7 +49,7 @@ void dijkstraBetweenness(int m, int n,int startnode, int B)
     omp_set_num_threads(4); 
 
 	for(i=0;i<n;i++)
-        #pragma omp parallel
+        #pragma omp parallel for private(cost)
 		{
             for(j=0;j<n;j++)
             {
@@ -63,7 +63,7 @@ void dijkstraBetweenness(int m, int n,int startnode, int B)
                 }
             }
         }
-	#pragma omp parallel
+	#pragma omp parallel for private(distance)
     {
         for(i=0;i<n;i++)
         {
@@ -77,34 +77,34 @@ void dijkstraBetweenness(int m, int n,int startnode, int B)
 	distance[startnode]=0;
 	visited[startnode]=1;
 	count=1;
-	
+
 	while(count<n-1)
 	{
 		mindistance=INFINITY;
-		for(i=0;i<n;i++)
+		for(i=0;i<n;++i)
 			if(distance[i]<mindistance&&!visited[i])
 			{
 				mindistance=distance[i];
 				nextnode=i;
 			}
             
-			visited[nextnode]=1;
-            #pragma omp parallel
-            {
-                for(i=0;i<n;i++)
-                {   
-                    if(!visited[i])
+        visited[nextnode]=1;
+        #pragma omp parallel for private(distance, pred, visited)
+        {
+            for(i=0;i<n;i++)
+            {   
+                if(!visited[i])
+                {
+                    if(mindistance+cost[nextnode][i]<distance[i])
                     {
-                        if(mindistance+cost[nextnode][i]<distance[i])
-                        {
-                            
-                            distance[i]=mindistance+cost[nextnode][i];
-                            pred[i]=nextnode;
-                        }
+                        
+                        distance[i]=mindistance+cost[nextnode][i];
+                        pred[i]=nextnode;
                     }
                 }
-                    
             }
+                
+        }
 		count++;
 	}
     pathCount = 0;
