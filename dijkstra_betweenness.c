@@ -51,6 +51,7 @@ void dijkstraBetweenness(int m, int n,int startnode, int B)
 	for(i=0;i<n;i++)
         #pragma omp parallel for private(cost)
 		{
+            //Buralar çok yanlış
             for(j=0;j<n;j++)
             {
                 if(G[i][j]==0)
@@ -87,7 +88,7 @@ void dijkstraBetweenness(int m, int n,int startnode, int B)
 				mindistance=distance[i];
 				nextnode=i;
 			}
-            
+        // Ada olma durumu
         visited[nextnode]=1;
         #pragma omp parallel for private(distance, pred, visited)
         {
@@ -223,10 +224,10 @@ void readMatrix(int argc, char** argv)
     {     
         G[I[i]][J[i]] = fabs(val[i]);   
     }
-    
+
     for (i=0; i<M; i++)
     {
-        for(int j=0; j<N; j++)
+        for(j=0; j<N; j++)
         {
             printf("%.3f\t", G[i][j]);
         }
