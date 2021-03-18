@@ -4,4 +4,4 @@ This project aims finding the betweenness centrality paralelly of a given node u
 
 To run 
 
-make $(FILENAME) $(WEIGHTED)
+make FILENAME=$(FILENAME) WEIGHTED=$(WEIGHTED)
