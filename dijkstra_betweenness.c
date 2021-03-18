@@ -8,7 +8,7 @@
 
 double** G;
 int M, N;
-
+//this is a test commit
 void dijkstraBetweenness(int, int, int, int);
 void readMatrix(int, char**);
 void freeMatrix();
